@@ -42,6 +42,7 @@ while diger_kutu=="e" or diger_kutu=="E":
         top_bilye_mg += bilye_mg
         if bilye==2 and bilye_mg!=standart_bilye_mg:
             standart_bilye_mg=onceki_bilye_mg
+            bilye_mg_fark=-bilye_mg_fark
         if farkli_bilye_sayisi==1:
             if standart_bilye_mg!=bilye_mg:
                 farkli_bilye_sayisi+=1
@@ -79,8 +80,8 @@ while diger_kutu=="e" or diger_kutu=="E":
         else:
             print(f"Farklı bilye diğerlerinden daha hafiftir. Aradaki fark {abs(bilye_mg_fark)} mg, fark yüzdesi %{(abs(bilye_mg_fark) / standart_bilye_mg) * 100:.2f}'dir.")
             digerlerinden_hafif_kutu+=1
-            daha_hafif_mg_farki_top+=bilye_mg_fark
-            daha_hafif_yuzde_top= (bilye_mg_fark / standart_bilye_mg) * 100
+            daha_hafif_mg_farki_top+=abs(bilye_mg_fark)
+            daha_hafif_yuzde_top+= (abs(bilye_mg_fark) / standart_bilye_mg) * 100
             agirlik="hafif"
         if abs(bilye_mg_fark)>en_agirlik_fark:
             en_agirlik_fark=abs(bilye_mg_fark)
