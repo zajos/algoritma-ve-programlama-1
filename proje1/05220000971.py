@@ -40,7 +40,7 @@ while diger_kutu=="e" or diger_kutu=="E":
         while bilye_mg<=0:
             bilye_mg=int(input("Lütfen pozitif bir tamsayı giriniz: "))
         top_bilye_mg += bilye_mg
-        if bilye==2 and bilye_mg!=standart_bilye_mg:
+        if bilye==2 and bilye_mg!=standart_bilye_mg:#ilk bilyenin farklı olduğu durum için bug fix
             standart_bilye_mg=onceki_bilye_mg
             bilye_mg_fark=-bilye_mg_fark
         if farkli_bilye_sayisi==1:
