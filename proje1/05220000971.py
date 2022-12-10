@@ -1,3 +1,7 @@
+#Mevlüt Emre Okumuş 05220000971 Proje-1
+
+#Variables
+
 MIN_BILYE_SAYISI=10
 MAX_FARKLI_BILYE=1
 diger_kutu="e"
@@ -31,26 +35,46 @@ min_yuzde_agirlik_hafiflik=""
 standart_bilye_mg=0
 onceki_bilye_mg=0
 iade_edilen_kutu=0
+
+#Kutular için ana döngü:
+
 while diger_kutu=="e" or diger_kutu=="E":
+
+    #Bilye sayısı input:
+
     kutudaki_bilye_sayisi=int(input(f"{kutu_no}. kutudaki bilye sayısını giriniz: "))
     while kutudaki_bilye_sayisi<MIN_BILYE_SAYISI:
         kutudaki_bilye_sayisi=int(input(f"Kutuda en az {MIN_BILYE_SAYISI} bilye olmalıdır, lütfen tekrar deneyiniz: "))
+
+    #Bilye ağırlıkları için iç döngü:
+
     for bilye in range(kutudaki_bilye_sayisi):
+
+        #Bilye ağırlığı input:
+
         bilye_mg=int(input(f"{bilye+1}. bilyenin mg cinsinden ağırlığını tamsayı olarak giriniz: "))
         while bilye_mg<=0:
             bilye_mg=int(input("Lütfen pozitif bir tamsayı giriniz: "))
+
+        #Bilye ağırlıklarını karşılaştırmak ve üretim hatasını tespit etmek için koşullar:
+
         top_bilye_mg += bilye_mg
-        if bilye==2 and bilye_mg!=standart_bilye_mg:#ilk bilyenin farklı olduğu durum için bug fix
+
+        if bilye==2 and bilye_mg!=standart_bilye_mg:#(ilk bilyenin farklı olduğu durum için bug fix)
             standart_bilye_mg=onceki_bilye_mg
             bilye_mg_fark=-bilye_mg_fark
+
         if farkli_bilye_sayisi==1:
+
             if standart_bilye_mg!=bilye_mg:
                 farkli_bilye_sayisi+=1
+
         elif top_bilye_mg!=(bilye+1)*bilye_mg:
             standart_bilye_mg= (top_bilye_mg - bilye_mg) / bilye
             onceki_bilye_mg=bilye_mg
             farkli_bilye_sayisi+=1
             bilye_mg_fark=bilye_mg-standart_bilye_mg
+
         if farkli_bilye_sayisi>MAX_FARKLI_BILYE:
             print("Bu kutuda üretim hatası vardır!")
             uretim_hatali_kutu_sayisi+=1
@@ -58,48 +82,74 @@ while diger_kutu=="e" or diger_kutu=="E":
             iade_edilen_kutu+=1
             break
 
+    #Bilyelerin hepsinin eşit olduğu durum:
+
     if farkli_bilye_sayisi==0:
         print("Bu kutudaki bilyelerin hepsi eşit ağırlıktadır.")
         hepsi_esit_kutu+=1
+
         if kutudaki_bilye_sayisi>en_cok_bilye:
             en_cok_bilye=kutudaki_bilye_sayisi
             en_cok_bilye_mg=bilye_mg
+
         if bilye_mg>en_agir_bilye_mg:
             en_agir_bilye_mg=bilye_mg
             en_agir_bilye=kutudaki_bilye_sayisi
         kabul_edilen_bilye+=kutudaki_bilye_sayisi
 
+    #Bir tane farklı bilye olduğu durum:
 
     elif farkli_bilye_sayisi==1:
+
+        #Farklı bilyenin ağır olduğu durum:
+
         if bilye_mg_fark>0:
             print(f"Farklı bilye diğerlerinden daha ağırdır. Aradaki fark {abs(bilye_mg_fark)} mg, fark yüzdesi %{(bilye_mg_fark / standart_bilye_mg) * 100:.2f}'dir.")
             digerlerinden_agir_kutu+=1
             daha_agir_mg_farki_top+=bilye_mg_fark
             daha_agir_yuzde_top+= (bilye_mg_fark / standart_bilye_mg) * 100
             agirlik="ağır"
+
+        #Farklı bilyenin hafif olduğu durum:
+
         else:
             print(f"Farklı bilye diğerlerinden daha hafiftir. Aradaki fark {abs(bilye_mg_fark)} mg, fark yüzdesi %{(abs(bilye_mg_fark) / standart_bilye_mg) * 100:.2f}'dir.")
             digerlerinden_hafif_kutu+=1
             daha_hafif_mg_farki_top+=abs(bilye_mg_fark)
             daha_hafif_yuzde_top+= (abs(bilye_mg_fark) / standart_bilye_mg) * 100
             agirlik="hafif"
+
+        #Farklı olan bilyelerin ağırlık farkı için min/max karşılaştırmaları:
+
         if abs(bilye_mg_fark)>en_agirlik_fark:
             en_agirlik_fark=abs(bilye_mg_fark)
             en_agirlik_hafiflik=agirlik
             en_agirlik_yuzde= (abs(bilye_mg_fark) / standart_bilye_mg) * 100
+
         if (abs(bilye_mg_fark) / standart_bilye_mg)*100<min_agirlik_yuzde:
             min_agirlik_yuzde= (abs(bilye_mg_fark) /standart_bilye_mg) * 100
             min_yuzde_mg_fark=abs(bilye_mg_fark)
             min_yuzde_agirlik_hafiflik=agirlik
+
         kabul_edilen_bilye += kutudaki_bilye_sayisi
+
+    #Ana döngüyü kontrol eden koşul:
+
     diger_kutu=input("Girilecek başka bir kutu daha mevcut mu(e/h)?")
     while not (diger_kutu=="e" or diger_kutu=="E" or diger_kutu=="h" or diger_kutu=="H"):
         diger_kutu=input("Lütfen geçerli bir cevap giriniz: ")
+
+    #Döngünün sonunda değişen ya da resetlenen değişkenler:
+
     kutu_no+=1
     top_bilye_mg=0
     farkli_bilye_sayisi=0
     standart_bilye_mg=0
+
 kabul_edilen_kutu=(kutu_no-1)-iade_edilen_kutu
+
+#Program çıktıları:
+
 print(f"Üretim hatası bulunan kutu sayısı {uretim_hatali_kutu_sayisi}, tüm kutular içindeki yüzdesi %{(100*(uretim_hatali_kutu_sayisi/(kutu_no-1))):.2f}'dir.")
 print(f"{iade_edilen_bilye} tane bilye iade edilmiş olup, {kabul_edilen_bilye} tane bilye kabul edilmiştir.")
 print(f"{hepsi_esit_kutu} tane kutuda bütün bilyeler eşit ağırlıkta ve bu kutuların iade edilmeyen kutular içindeki yüzdesi %{100*(hepsi_esit_kutu/kabul_edilen_kutu):.2f}'dir")
